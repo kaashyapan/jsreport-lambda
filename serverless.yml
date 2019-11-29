@@ -1,0 +1,36 @@
+service: reportmaker
+provider:
+  name: aws
+  runtime: dotnetcore2.1
+  stage: production
+  region: ap-south-1
+  deploymentBucket:
+    name: growel-sls-artifacts
+  usagePlan:
+    quota:
+      limit: 1000
+      offset: 2
+      period: MONTH
+    throttle:
+      burstLimit: 100
+      rateLimit: 100
+  tags:
+    owner: growel
+    name: logger
+
+  # you can add statements to the Lambda function's IAM Role here
+  iamRoleStatements:
+
+package:
+  artifact: bin/release/netcoreapp2.1/deploy-package.zip
+
+functions:
+  makeReport:
+    handler: FsharpHandlers::Lambada.Handler::accept
+    description: Accept logs
+    memorySize: 512
+
+    events:
+      - http:
+          path: log
+          method: post
