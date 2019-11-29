@@ -28,7 +28,7 @@ functions:
   makeReport:
     handler: FsharpHandlers::Lambada.Handler::accept
     description: Accept logs
-    memorySize: 512
+    memorySize: 3008
 
     events:
       - http:
